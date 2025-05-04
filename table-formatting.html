@@ -33,66 +33,14 @@
             font-weight: bold;
             background-color: #f2f2f2;
         }
+
+        span {
+            box-shadow: -1px 0px 0px 0px red, 1px 0px 0px 0px red;
+            /* outline: 1px solid black; */
+        }
     </style>
     <script>
-        function toggleNumerals() {
-            const table = document.querySelector('table');
-            const checkbox = document.getElementById('numeralsToggle');
-            const cells = document.querySelectorAll('td, th');
-            
-            if (checkbox.checked) {
-                cells.forEach(cell => {
-                    cell.style.fontVariantNumeric = 'tabular-nums';
-                });
-            } else {
-                cells.forEach(cell => {
-                    cell.style.fontVariantNumeric = 'proportional-nums';
-                });
-            }
-        }
-        
-        // Store original values
-        const originalValues = {};
-        
-        function toggleDecimalPlaces() {
-            const checkbox = document.getElementById('decimalToggle');
-            const cells = document.querySelectorAll('td:not(:first-child)');
-            
-            // First time running - store original values
-            if (Object.keys(originalValues).length === 0) {
-                cells.forEach((cell, index) => {
-                    originalValues[index] = cell.textContent;
-                });
-            }
-            
-            if (checkbox.checked) {
-                // Standardize to 2 decimal places
-                cells.forEach((cell, index) => {
-                    const text = cell.textContent;
-                    // Skip any cells with text content
-                    if (!/^[\d,.]+$/.test(text.trim())) return;
-                    
-                    // Remove any commas for processing
-                    let value = text.replace(/,/g, '');
-                    
-                    if (!value.includes('.')) {
-                        // Add .00 to integers
-                        cell.textContent = text.includes(',') ? 
-                            text.replace(/(\d+)$/, '$1.00') : 
-                            value + '.00';
-                    } else if (/\.\d$/.test(value)) {
-                        // Add trailing zero to single decimal place
-                        cell.textContent = text.replace(/(\.\d)/, '$10');
-                    }
-                });
-            } else {
-                // Restore original values
-                cells.forEach((cell, index) => {
-                    cell.textContent = originalValues[index];
-                });
-            }
-        }
-        
+
         function toggleAlignment() {
             const checkbox = document.getElementById('alignmentToggle');
             const numberCells = document.querySelectorAll('td:not(:first-child), th:not(:first-child)');
@@ -109,11 +57,89 @@
                 });
             }
         }
+
+        // Store original values
+        const originalValues = {};
+        
+        function toggleDecimalPlaces() {
+            const checkbox = document.getElementById('decimalToggle');
+            const cellSpans = document.querySelectorAll('td:not(:first-child) > span');
+            
+            // First time running - store original values
+            if (Object.keys(originalValues).length === 0) {
+                cellSpans.forEach((span, index) => {
+                    originalValues[index] = span.textContent;
+                });
+            }
+            
+            if (checkbox.checked) {
+                // Standardize to 2 decimal places
+                cellSpans.forEach((span, index) => {
+                    const text = span.textContent;
+                    // Skip any cells with text content
+                    if (!/^[\d,.]+$/.test(text.trim())) return;
+                    
+                    // Remove any commas for processing
+                    let value = text.replace(/,/g, '');
+                    
+                    if (!value.includes('.')) {
+                        // Add .00 to integers
+                        span.textContent = text.includes(',') ? 
+                            text.replace(/(\d+)$/, '$1.00') : 
+                            value + '.00';
+                    } else if (/\.\d$/.test(value)) {
+                        // Add trailing zero to single decimal place
+                        span.textContent = text.replace(/(\.\d)/, '$10');
+                    }
+                });
+            } else {
+                // Restore original values
+                cellSpans.forEach((span, index) => {
+                    span.textContent = originalValues[index];
+                });
+            }
+        }
+
+
+        function toggleNumerals() {
+            const table = document.querySelector('table');
+            const checkbox = document.getElementById('numeralsToggle');
+            const cells = document.querySelectorAll('td, th');
+            
+            if (checkbox.checked) {
+                cells.forEach(cell => {
+                    cell.style.fontVariantNumeric = 'tabular-nums';
+                });
+            } else {
+                cells.forEach(cell => {
+                    cell.style.fontVariantNumeric = 'proportional-nums';
+                });
+            }
+        }
+        
+
+        
+
     </script>
 </head>
 <body>
     <h1>Welcome to My Page</h1>
     <p>This is a basic HTML page.</p>
+
+
+    <div style="margin-bottom: 10px;">
+        <label for="alignmentToggle">
+            <input type="checkbox" id="alignmentToggle" onchange="toggleAlignment()">
+            Right-align number columns
+        </label>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label for="decimalToggle">
+            <input type="checkbox" id="decimalToggle" onchange="toggleDecimalPlaces()">
+            Standardize to 2 decimal places
+        </label>
+    </div>
     
     <div style="margin-bottom: 10px;">
         <label for="numeralsToggle">
@@ -122,19 +148,9 @@
         </label>
     </div>
     
-    <div style="margin-bottom: 10px;">
-        <label for="decimalToggle">
-            <input type="checkbox" id="decimalToggle" onchange="toggleDecimalPlaces()">
-            Standardize to 2 decimal places
-        </label>
-    </div>
+
     
-    <div style="margin-bottom: 20px;">
-        <label for="alignmentToggle">
-            <input type="checkbox" id="alignmentToggle" onchange="toggleAlignment()">
-            Right-align number columns
-        </label>
-    </div>
+
     
     <table>
         <thead>
@@ -150,53 +166,53 @@
         <tbody>
             <tr>
                 <td>Product A</td>
-                <td>87.45</td>
-                <td>1245</td>
-                <td>28756.2</td>
-                <td>385942</td>
-                <td>4587652.89</td>
+                <td><span>87.45</span></td>
+                <td><span>1,245</span></td>
+                <td><span>28,756.2</span></td>
+                <td><span>385,942</span></td>
+                <td><span>4,587,652.89</span></td>
             </tr>
             <tr>
                 <td>Product B</td>
-                <td>52</td>
-                <td>2,382.54</td>
-                <td>35,928</td>
-                <td>472,851.3</td>
-                <td>8,275,391</td>
+                <td><span>52</span></td>
+                <td><span>2,382.54</span></td>
+                <td><span>35,928</span></td>
+                <td><span>472,851.39</span></td>
+                <td><span>8,275,391</span></td>
             </tr>
             <tr>
                 <td>Product C</td>
-                <td>96.32</td>
-                <td>3,654</td>
-                <td>46,213.7</td>
-                <td>587,214</td>
-                <td>12,456,398.45</td>
+                <td><span>96.32</span></td>
+                <td><span>3,654</span></td>
+                <td><span>46,213.7</span></td>
+                <td><span>988,773.45</span></td>
+                <td><span>12,456,398.45</span></td>
             </tr>
             <tr>
                 <td>Product D</td>
-                <td>73</td>
-                <td>4,987.29</td>
-                <td>59,426</td>
-                <td>648,379.8</td>
-                <td>29,845,623</td>
+                <td><span>73</span></td>
+                <td><span>4,987.29</span></td>
+                <td><span>59,426</span></td>
+                <td><span>7,111,491</span></td>
+                <td><span>29,845,623</span></td>
             </tr>
             <tr>
                 <td>Product E</td>
-                <td>50.25</td>
-                <td>7,256</td>
-                <td>96,325.6</td>
-                <td>874,562</td>
-                <td>587,456,397.12</td>
+                <td><span>50.25</span></td>
+                <td><span>7,256</span></td>
+                <td><span>96,325.6</span></td>
+                <td><span>874,562</span></td>
+                <td><span>587,456,397.12</span></td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td>Total</td>
-                <td>358.02</td>
-                <td>19,524.83</td>
-                <td>266,648.5</td>
-                <td>2,968,948.1</td>
-                <td>642,621,461.46</td>
+                <td><span>358.02</span></td>
+                <td><span>19,524.83</span></td>
+                <td><span>266,648.5</span></td>
+                <td><span>2,968,948.1</span></td>
+                <td><span>642,621,461.46</span></td>
             </tr>
         </tfoot>
     </table>
