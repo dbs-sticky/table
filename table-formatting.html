@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic HTML Page</title>
+    <!-- Add Google Font Roboto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+            font-family: 'Roboto', sans-serif;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-variant-numeric: proportional-nums;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        td:first-child, th:first-child {
+            text-align: left;
+        }
+        tfoot {
+            font-weight: bold;
+            background-color: #f2f2f2;
+        }
+    </style>
+    <script>
+        function toggleNumerals() {
+            const table = document.querySelector('table');
+            const checkbox = document.getElementById('numeralsToggle');
+            const cells = document.querySelectorAll('td, th');
+            
+            if (checkbox.checked) {
+                cells.forEach(cell => {
+                    cell.style.fontVariantNumeric = 'tabular-nums';
+                });
+            } else {
+                cells.forEach(cell => {
+                    cell.style.fontVariantNumeric = 'proportional-nums';
+                });
+            }
+        }
+        
+        // Store original values
+        const originalValues = {};
+        
+        function toggleDecimalPlaces() {
+            const checkbox = document.getElementById('decimalToggle');
+            const cells = document.querySelectorAll('td:not(:first-child)');
+            
+            // First time running - store original values
+            if (Object.keys(originalValues).length === 0) {
+                cells.forEach((cell, index) => {
+                    originalValues[index] = cell.textContent;
+                });
+            }
+            
+            if (checkbox.checked) {
+                // Standardize to 2 decimal places
+                cells.forEach((cell, index) => {
+                    const text = cell.textContent;
+                    // Skip any cells with text content
+                    if (!/^[\d,.]+$/.test(text.trim())) return;
+                    
+                    // Remove any commas for processing
+                    let value = text.replace(/,/g, '');
+                    
+                    if (!value.includes('.')) {
+                        // Add .00 to integers
+                        cell.textContent = text.includes(',') ? 
+                            text.replace(/(\d+)$/, '$1.00') : 
+                            value + '.00';
+                    } else if (/\.\d$/.test(value)) {
+                        // Add trailing zero to single decimal place
+                        cell.textContent = text.replace(/(\.\d)/, '$10');
+                    }
+                });
+            } else {
+                // Restore original values
+                cells.forEach((cell, index) => {
+                    cell.textContent = originalValues[index];
+                });
+            }
+        }
+        
+        function toggleAlignment() {
+            const checkbox = document.getElementById('alignmentToggle');
+            const numberCells = document.querySelectorAll('td:not(:first-child), th:not(:first-child)');
+            
+            if (checkbox.checked) {
+                // Right align number columns
+                numberCells.forEach(cell => {
+                    cell.style.textAlign = 'right';
+                });
+            } else {
+                // Reset to default alignment
+                numberCells.forEach(cell => {
+                    cell.style.textAlign = 'left';
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Welcome to My Page</h1>
+    <p>This is a basic HTML page.</p>
+    
+    <div style="margin-bottom: 10px;">
+        <label for="numeralsToggle">
+            <input type="checkbox" id="numeralsToggle" onchange="toggleNumerals()">
+            Use tabular numerals (fixed-width digits)
+        </label>
+    </div>
+    
+    <div style="margin-bottom: 10px;">
+        <label for="decimalToggle">
+            <input type="checkbox" id="decimalToggle" onchange="toggleDecimalPlaces()">
+            Standardize to 2 decimal places
+        </label>
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+        <label for="alignmentToggle">
+            <input type="checkbox" id="alignmentToggle" onchange="toggleAlignment()">
+            Right-align number columns
+        </label>
+    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Small</th>
+                <th>Medium</th>
+                <th>Large</th>
+                <th>X-Large</th>
+                <th>XX-Large</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Product A</td>
+                <td>87.45</td>
+                <td>1245</td>
+                <td>28756.2</td>
+                <td>385942</td>
+                <td>4587652.89</td>
+            </tr>
+            <tr>
+                <td>Product B</td>
+                <td>52</td>
+                <td>2,382.54</td>
+                <td>35,928</td>
+                <td>472,851.3</td>
+                <td>8,275,391</td>
+            </tr>
+            <tr>
+                <td>Product C</td>
+                <td>96.32</td>
+                <td>3,654</td>
+                <td>46,213.7</td>
+                <td>587,214</td>
+                <td>12,456,398.45</td>
+            </tr>
+            <tr>
+                <td>Product D</td>
+                <td>73</td>
+                <td>4,987.29</td>
+                <td>59,426</td>
+                <td>648,379.8</td>
+                <td>29,845,623</td>
+            </tr>
+            <tr>
+                <td>Product E</td>
+                <td>50.25</td>
+                <td>7,256</td>
+                <td>96,325.6</td>
+                <td>874,562</td>
+                <td>587,456,397.12</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>Total</td>
+                <td>358.02</td>
+                <td>19,524.83</td>
+                <td>266,648.5</td>
+                <td>2,968,948.1</td>
+                <td>642,621,461.46</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
