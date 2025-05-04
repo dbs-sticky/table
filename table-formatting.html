@@ -4,23 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic HTML Page</title>
-    <!-- Add Google Font Roboto -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
+
+        @font-face {
+                    font-family: 'FireSans';
+                    src: url('FiraSans.ttf') format('ttf');
+                    font-weight: 300;
+                    font-style: normal;
+                    font-display: swap;
+                }
+
         table {
             border-collapse: collapse;
             width: 100%;
             max-width: 900px;
             margin: auto;
-            font-family: 'Roboto', sans-serif;
+            font-family: 'FireSans', sans-serif;
         }
+
         th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+            border: 1px solid #ebebeb;
+            padding: 0.25em;
             text-align: left;
-            font-variant-numeric: proportional-nums;
+
         }
         th {
             background-color: #f2f2f2;
@@ -36,10 +42,21 @@
 
         span {
             box-shadow: -1px 0px 0px 0px red, 1px 0px 0px 0px red;
-            /* outline: 1px solid black; */
         }
     </style>
     <script>
+        function toggleNumeralStyle() {
+            const checkbox = document.getElementById('numeralStyleToggle');
+            const table = document.querySelector('table');
+            
+            if (checkbox.checked) {
+                // Use lining numerals
+                table.style.fontVariantNumeric = 'lining-nums';
+            } else {
+                // Use oldstyle numerals
+                table.style.fontVariantNumeric = 'oldstyle-nums';
+            }
+        }
 
         function toggleAlignment() {
             const checkbox = document.getElementById('alignmentToggle');
@@ -117,8 +134,22 @@
             }
         }
         
-
-        
+        function toggleGuides() {
+            const checkbox = document.getElementById('guidesToggle');
+            const spans = document.querySelectorAll('td > span');
+            
+            if (checkbox.checked) {
+                // Enable red guide lines
+                spans.forEach(span => {
+                    span.style.boxShadow = '-1px 0px 0px 0px red, 1px 0px 0px 0px red';
+                });
+            } else {
+                // Disable red guide lines
+                spans.forEach(span => {
+                    span.style.boxShadow = 'none';
+                });
+            }
+        }
 
     </script>
 </head>
@@ -126,6 +157,12 @@
     <h1>Welcome to My Page</h1>
     <p>This is a basic HTML page.</p>
 
+    <div style="margin-bottom: 10px;">
+        <label for="numeralStyleToggle">
+            <input type="checkbox" id="numeralStyleToggle" onchange="toggleNumeralStyle()" >
+            Use lining numerals (instead of oldstyle)
+        </label>
+    </div>
 
     <div style="margin-bottom: 10px;">
         <label for="alignmentToggle">
@@ -147,9 +184,13 @@
             Use tabular numerals (fixed-width digits)
         </label>
     </div>
-    
-
-    
+ 
+    <div style="margin-bottom: 10px;">
+        <label for="guidesToggle">
+            <input type="checkbox" id="guidesToggle" onchange="toggleGuides()" checked>
+            Show alignment guides
+        </label>
+    </div>
 
     
     <table>
