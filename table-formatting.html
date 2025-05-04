@@ -20,13 +20,14 @@
             max-width: 900px;
             margin: auto;
             font-family: 'FireSans', sans-serif;
+            
         }
 
         th, td {
             border: 1px solid #ebebeb;
             padding: 0.25em;
             text-align: left;
-
+            font-feature-settings: "onum", "pnum";
         }
         th {
             background-color: #f2f2f2;
@@ -45,19 +46,6 @@
         }
     </style>
     <script>
-        function toggleNumeralStyle() {
-            const checkbox = document.getElementById('numeralStyleToggle');
-            const table = document.querySelector('table');
-            
-            if (checkbox.checked) {
-                // Use lining numerals
-                table.style.fontVariantNumeric = 'lining-nums';
-            } else {
-                // Use oldstyle numerals
-                table.style.fontVariantNumeric = 'oldstyle-nums';
-            }
-        }
-
         function toggleAlignment() {
             const checkbox = document.getElementById('alignmentToggle');
             const numberCells = document.querySelectorAll('td:not(:first-child), th:not(:first-child)');
@@ -117,19 +105,48 @@
             }
         }
 
-
-        function toggleNumerals() {
-            const table = document.querySelector('table');
+        function toggleNumeralStyle() {
             const checkbox = document.getElementById('numeralsToggle');
             const cells = document.querySelectorAll('td, th');
             
             if (checkbox.checked) {
+                // Use lining numerals
                 cells.forEach(cell => {
-                    cell.style.fontVariantNumeric = 'tabular-nums';
+                    // cell.style.fontVariantNumeric = cell.style.fontVariantNumeric.replace('oldstyle-nums', 'lining-nums');
+                    // For browsers that need it, also set the OpenType feature
+                    cell.style.fontFeatureSettings = '"lnum", "pnum"';
                 });
             } else {
+                // Use oldstyle numerals
                 cells.forEach(cell => {
-                    cell.style.fontVariantNumeric = 'proportional-nums';
+                    // cell.style.fontVariantNumeric = cell.style.fontVariantNumeric.replace('lining-nums', 'oldstyle-nums');
+                    // For browsers that need it, also set the OpenType feature
+                    cell.style.fontFeatureSettings = '"onum", "pnum"';
+                });
+            }
+        }
+
+        function toggleNumerals() {
+            const checkbox = document.getElementById('numeralsToggle');
+            const cells = document.querySelectorAll('td, th');
+            
+            if (checkbox.checked) {
+                // Use tabular numerals
+                cells.forEach(cell => {
+                    // Replace proportional with tabular but preserve other settings
+                    // cell.style.fontVariantNumeric = cell.style.fontVariantNumeric.replace('proportional-nums', 'tabular-nums');
+                    // Update OpenType features but preserve figure style (oldstyle/lining)
+                    const hasOldStyle = cell.style.fontFeatureSettings.includes('onum');
+                    cell.style.fontFeatureSettings = hasOldStyle ? '"onum", "tnum"' : '"lnum", "tnum"';
+                });
+            } else {
+                // Use proportional numerals
+                cells.forEach(cell => {
+                    // Replace tabular with proportional but preserve other settings
+                    // cell.style.fontVariantNumeric = cell.style.fontVariantNumeric.replace('tabular-nums', 'proportional-nums');
+                    // Update OpenType features but preserve figure style (oldstyle/lining)
+                    const hasOldStyle = cell.style.fontFeatureSettings.includes('onum');
+                    cell.style.fontFeatureSettings = hasOldStyle ? '"onum", "pnum"' : '"lnum", "pnum"';
                 });
             }
         }
