@@ -14,12 +14,17 @@
                     font-display: swap;
                 }
 
+        body {
+            font-family: sans-serif;
+            max-width: 900px;
+            margin: auto;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
-            max-width: 900px;
-            margin: auto;
             font-family: 'FireSans', sans-serif;
+            margin-block-start: 3rem;
             
         }
 
@@ -60,9 +65,7 @@
             background-color: #f2f2f2;
         }
 
-        span {
-            box-shadow: -1px 0px 0px 0px red, 1px 0px 0px 0px red;
-        }
+
     </style>
     <script>
         function toggleAlignment() {
@@ -190,23 +193,77 @@
             }
         }
 
+        function toggleCommas() {
+            const checkbox = document.getElementById('commasToggle');
+            const cellSpans = document.querySelectorAll('td:not(:first-child) > span');
+            
+            // First time running - store original values if not already stored
+            if (Object.keys(originalValues).length === 0) {
+                cellSpans.forEach((span, index) => {
+                    originalValues[index] = span.textContent;
+                });
+            }
+            
+            if (checkbox.checked) {
+                // Add commas to numbers
+                cellSpans.forEach((span) => {
+                    const text = span.textContent;
+                    // Skip any cells with non-numeric content
+                    if (!/^[\d,.]+$/.test(text.trim())) return;
+                    
+                    // Remove existing commas first
+                    let value = text.replace(/,/g, '');
+                    
+                    // Split by decimal point if exists
+                    let parts = value.split('.');
+                    
+                    // Add commas to the integer part
+                    parts[0] = numberWithCommas(parts[0]);
+                    
+                    // Join back with decimal if it existed
+                    span.textContent = parts.length > 1 ? parts.join('.') : parts[0];
+                });
+            } else {
+                // Remove commas (restore original format)
+                cellSpans.forEach((span, index) => {
+                    span.textContent = originalValues[index];
+                });
+            }
+        }
+        
+        function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
     </script>
 </head>
 <body>
-    <h1>Welcome to My Page</h1>
-    <p>This is a basic HTML page.</p>
+    <h1>Tables</h1>
 
     <div style="margin-bottom: 10px;">
         <label for="alignmentToggle">
             <input type="checkbox" id="alignmentToggle" onchange="toggleAlignment()">
-            Right-align number columns
+            Right-align number columns ⭐
         </label>
     </div>
 
     <div style="margin-bottom: 10px;">
         <label for="decimalToggle">
             <input type="checkbox" id="decimalToggle" onchange="toggleDecimalPlaces()">
-            Standardize to 2 decimal places
+            Standardize to 2 decimal places ⭐
+        </label>
+    </div>
+   
+    <div style="margin-bottom: 10px;">
+        <label for="numeralsToggle">
+            <input type="checkbox" id="numeralsToggle" onchange="toggleNumerals()">
+            Use tabular numerals (fixed-width digits) ⭐
+        </label>
+    </div>
+
+    <div style="margin-bottom: 10px;">
+        <label for="guidesToggle">
+            <input type="checkbox" id="guidesToggle" onchange="toggleGuides()">
+            Show alignment guides
         </label>
     </div>
 
@@ -217,21 +274,13 @@
         </label>
     </div>
 
-   
     <div style="margin-bottom: 10px;">
-        <label for="numeralsToggle">
-            <input type="checkbox" id="numeralsToggle" onchange="toggleNumerals()">
-            Use tabular numerals (fixed-width digits)
+        <label for="commasToggle">
+            <input type="checkbox" id="commasToggle" onchange="toggleCommas()">
+            Add thousand separators (commas)
         </label>
     </div>
  
-    <div style="margin-bottom: 10px;">
-        <label for="guidesToggle">
-            <input type="checkbox" id="guidesToggle" onchange="toggleGuides()" checked>
-            Show alignment guides
-        </label>
-    </div>
-
     
     <table>
         <thead>
@@ -248,52 +297,52 @@
             <tr>
                 <td class="old-style proportional-style">Product A</td>
                 <td class="old-style proportional-style"><span>12.45</span></td>
-                <td class="old-style proportional-style"><span>1,245</span></td>
-                <td class="old-style proportional-style"><span>28,756.2</span></td>
-                <td class="old-style proportional-style"><span>385,942</span></td>
-                <td class="old-style proportional-style"><span>106,587,652.89</span></td>
+                <td class="old-style proportional-style"><span>1245</span></td>
+                <td class="old-style proportional-style"><span>28756.2</span></td>
+                <td class="old-style proportional-style"><span>385942</span></td>
+                <td class="old-style proportional-style"><span>106587652.89</span></td>
             </tr>
             <tr>
                 <td class="old-style proportional-style">Product B</td>
                 <td class="old-style proportional-style"><span>52.99</span></td>
-                <td class="old-style proportional-style"><span>2,382.54</span></td>
-                <td class="old-style proportional-style"><span>35,928</span></td>
-                <td class="old-style proportional-style"><span>472,851.39</span></td>
-                <td class="old-style proportional-style"><span>534,999,900.7</span></td>
+                <td class="old-style proportional-style"><span>2382.54</span></td>
+                <td class="old-style proportional-style"><span>35928</span></td>
+                <td class="old-style proportional-style"><span>472851.39</span></td>
+                <td class="old-style proportional-style"><span>534999900</span></td>
             </tr>
             <tr>
                 <td class="old-style proportional-style">Product C</td>
                 <td class="old-style proportional-style"><span>86.32</span></td>
-                <td class="old-style proportional-style"><span>3,654</span></td>
-                <td class="old-style proportional-style"><span>46,213.7</span></td>
-                <td class="old-style proportional-style"><span>988,773.45</span></td>
-                <td class="old-style proportional-style"><span>956,143,111</span></td>
+                <td class="old-style proportional-style"><span>3654</span></td>
+                <td class="old-style proportional-style"><span>46213.7</span></td>
+                <td class="old-style proportional-style"><span>988773.45</span></td>
+                <td class="old-style proportional-style"><span>956143111</span></td>
             </tr>
             <tr>
                 <td class="old-style proportional-style">Product D</td>
                 <td class="old-style proportional-style"><span>93.8</span></td>
-                <td class="old-style proportional-style"><span>4,987.29</span></td>
-                <td class="old-style proportional-style"><span>59,426</span></td>
-                <td class="old-style proportional-style"><span>7,111,491</span></td>
-                <td class="old-style proportional-style"><span>111,765,161.1</span></td>
+                <td class="old-style proportional-style"><span>4987.29</span></td>
+                <td class="old-style proportional-style"><span>59426</span></td>
+                <td class="old-style proportional-style"><span>7111491</span></td>
+                <td class="old-style proportional-style"><span>1111765161</span></td>
             </tr>
             <tr>
                 <td class="old-style proportional-style">Product E</td>
                 <td class="old-style proportional-style"><span>111</span></td>
-                <td class="old-style proportional-style"><span>642,621,461.56</span></td>
-                <td class="old-style proportional-style"><span>956,143,111</span></td>
-                <td class="old-style proportional-style"><span>111,765,161.1</span></td>
-                <td class="old-style proportional-style"><span>748,730,723</span></td>
+                <td class="old-style proportional-style"><span>642621461.56</span></td>
+                <td class="old-style proportional-style"><span>956143111</span></td>
+                <td class="old-style proportional-style"><span>111765161.1</span></td>
+                <td class="old-style proportional-style"><span>748730723</span></td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
                 <td class="old-style proportional-style">Total</td>
                 <td class="old-style proportional-style"><span>358.02</span></td>
-                <td class="old-style proportional-style"><span>19,524.83</span></td>
-                <td class="old-style proportional-style"><span>266,648.5</span></td>
-                <td class="old-style proportional-style"><span>2,968,948.1</span></td>
-                <td class="old-style proportional-style"><span>642,621,461.46</span></td>
+                <td class="old-style proportional-style"><span>19524.83</span></td>
+                <td class="old-style proportional-style"><span>266648.5</span></td>
+                <td class="old-style proportional-style"><span>2968948.1</span></td>
+                <td class="old-style proportional-style"><span>642621461.46</span></td>
             </tr>
         </tfoot>
     </table>
