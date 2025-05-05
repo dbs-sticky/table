@@ -18,6 +18,7 @@
             font-family: sans-serif;
             max-width: 900px;
             margin: auto;
+            font-size: 1.3rem;;
         }
 
         table {
@@ -269,18 +270,19 @@
     </script>
 
     <div style="margin-bottom: 10px; padding-left: 10px">
+        <label for="decimalToggle">
+            <input type="checkbox" id="decimalToggle" onchange="toggleDecimalPlaces()">
+            Standardise the number of decimal places ✳️
+        </label>
+    </div>
+
+    <div style="margin-bottom: 10px; padding-left: 10px">
         <label for="alignmentToggle">
             <input type="checkbox" id="alignmentToggle" onchange="toggleAlignment()">
             Right-align numerical columns ✳️
         </label>
     </div>
 
-    <div style="margin-bottom: 10px; padding-left: 10px">
-        <label for="decimalToggle">
-            <input type="checkbox" id="decimalToggle" onchange="toggleDecimalPlaces()">
-            Standardise the number of decimal places ✳️
-        </label>
-    </div>
    
     <div style="margin-bottom: 10px; padding-left: 10px">
         <label for="numeralsToggle">
