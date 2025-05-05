@@ -239,45 +239,75 @@
 <body>
     <h1>Tables</h1>
 
-    <div style="margin-bottom: 10px;">
-        <label for="alignmentToggle">
-            <input type="checkbox" id="alignmentToggle" onchange="toggleAlignment()">
-            Right-align number columns ⭐
+    <div style="margin-bottom: 20px; padding: 8px; background-color: #f8f8f8; border-left: 3px solid #2196F3;">
+        <label for="toggleAll" style="font-weight: bold;">
+            <input type="checkbox" id="toggleAll" onchange="toggleAllOptions()">
+            Toggle All Styles
         </label>
     </div>
 
-    <div style="margin-bottom: 10px;">
+    <script>
+        function toggleAllOptions() {
+            const master = document.getElementById('toggleAll');
+            const checkboxes = [
+                'alignmentToggle',
+                'decimalToggle',
+                'numeralsToggle',
+                'numeralStyleToggle',
+                'commasToggle'
+            ];
+            
+            checkboxes.forEach(id => {
+                const checkbox = document.getElementById(id);
+                checkbox.checked = master.checked;
+                
+                // Trigger the change event for each checkbox
+                const event = new Event('change');
+                checkbox.dispatchEvent(event);
+            });
+        }
+    </script>
+
+    <div style="margin-bottom: 10px; padding-left: 10px">
+        <label for="alignmentToggle">
+            <input type="checkbox" id="alignmentToggle" onchange="toggleAlignment()">
+            Right-align numerical columns ✳️
+        </label>
+    </div>
+
+    <div style="margin-bottom: 10px; padding-left: 10px">
         <label for="decimalToggle">
             <input type="checkbox" id="decimalToggle" onchange="toggleDecimalPlaces()">
-            Standardize to 2 decimal places ⭐
+            Standardize the number of decimal places ✳️
         </label>
     </div>
    
-    <div style="margin-bottom: 10px;">
+    <div style="margin-bottom: 10px; padding-left: 10px">
         <label for="numeralsToggle">
             <input type="checkbox" id="numeralsToggle" onchange="toggleNumerals()">
-            Use tabular numerals (fixed-width digits) ⭐
+            Use tabular numerals (instead of proportional) ✳️
         </label>
     </div>
 
-    <div style="margin-bottom: 10px;">
-        <label for="guidesToggle">
-            <input type="checkbox" id="guidesToggle" onchange="toggleGuides()">
-            Show alignment guides
-        </label>
-    </div>
 
-    <div style="margin-bottom: 10px;">
+    <div style="margin-bottom: 10px; padding-left: 10px">
         <label for="numeralStyleToggle">
             <input type="checkbox" id="numeralStyleToggle" onchange="toggleNumeralStyle()" >
             Use lining numerals (instead of oldstyle)
         </label>
     </div>
 
-    <div style="margin-bottom: 10px;">
+    <div style="margin-bottom: 10px; padding-left: 10px">
         <label for="commasToggle">
             <input type="checkbox" id="commasToggle" onchange="toggleCommas()">
-            Add thousand separators (commas)
+            Add thousand separators
+        </label>
+    </div>
+
+    <div style="margin-bottom: 10px; padding-left: 10px">
+        <label for="guidesToggle">
+            <input type="checkbox" id="guidesToggle" onchange="toggleGuides()">
+            Show alignment guides
         </label>
     </div>
  
@@ -313,7 +343,7 @@
             <tr>
                 <td class="old-style proportional-style">Product C</td>
                 <td class="old-style proportional-style"><span>86.32</span></td>
-                <td class="old-style proportional-style"><span>3654</span></td>
+                <td class="old-style proportional-style"><span>5654</span></td>
                 <td class="old-style proportional-style"><span>46213.7</span></td>
                 <td class="old-style proportional-style"><span>988773.45</span></td>
                 <td class="old-style proportional-style"><span>956143111</span></td>
@@ -329,7 +359,7 @@
             <tr>
                 <td class="old-style proportional-style">Product E</td>
                 <td class="old-style proportional-style"><span>111</span></td>
-                <td class="old-style proportional-style"><span>642621461.56</span></td>
+                <td class="old-style proportional-style"><span>1461.56</span></td>
                 <td class="old-style proportional-style"><span>956143111</span></td>
                 <td class="old-style proportional-style"><span>111765161.1</span></td>
                 <td class="old-style proportional-style"><span>748730723</span></td>
