@@ -8,7 +8,7 @@
 
         @font-face {
                     font-family: 'FireSans';
-                    src: url('FiraSans.ttf') format('ttf');
+                    src: url('/FiraSans-light.woff2') format('woff2');
                     font-weight: 300;
                     font-style: normal;
                     font-display: swap;
@@ -27,8 +27,27 @@
             border: 1px solid #ebebeb;
             padding: 0.25em;
             text-align: left;
-            font-feature-settings: "onum", "pnum";
         }
+
+        .old-style {
+            font-variant-numeric: oldstyle-nums;
+            font-feature-settings: "onum" 1;
+        }
+
+        .lining-style {
+            font-variant-numeric: lining-nums;
+            font-feature-settings: "lnum" 1;
+        }
+
+        .proportional-style {
+            font-variant-numeric: proportional-nums;
+         }
+
+        .tabular-style {
+            font-variant-numeric: tabular-nums;
+        }
+
+
         th {
             background-color: #f2f2f2;
             font-weight: bold;
@@ -105,27 +124,32 @@
             }
         }
 
+        //Toggle old style and lining style numerals
         function toggleNumeralStyle() {
-            const checkbox = document.getElementById('numeralsToggle');
+            const checkbox = document.getElementById('numeralStyleToggle');
             const cells = document.querySelectorAll('td, th');
             
             if (checkbox.checked) {
                 // Use lining numerals
                 cells.forEach(cell => {
-                    // cell.style.fontVariantNumeric = cell.style.fontVariantNumeric.replace('oldstyle-nums', 'lining-nums');
-                    // For browsers that need it, also set the OpenType feature
-                    cell.style.fontFeatureSettings = '"lnum", "pnum"';
+                    if (cell.classList.contains('old-style')) {
+                        cell.classList.remove('old-style');
+                    }
+                    cell.classList.add('lining-style');
+
                 });
             } else {
                 // Use oldstyle numerals
                 cells.forEach(cell => {
-                    // cell.style.fontVariantNumeric = cell.style.fontVariantNumeric.replace('lining-nums', 'oldstyle-nums');
-                    // For browsers that need it, also set the OpenType feature
-                    cell.style.fontFeatureSettings = '"onum", "pnum"';
+                    if (cell.classList.contains('lining-style')) {
+                        cell.classList.remove('lining-style');                    
+                    }
+                    cell.classList.add('old-style');
                 });
             }
         }
 
+        // Toggle proportional and tabular numerals
         function toggleNumerals() {
             const checkbox = document.getElementById('numeralsToggle');
             const cells = document.querySelectorAll('td, th');
@@ -133,20 +157,18 @@
             if (checkbox.checked) {
                 // Use tabular numerals
                 cells.forEach(cell => {
-                    // Replace proportional with tabular but preserve other settings
-                    // cell.style.fontVariantNumeric = cell.style.fontVariantNumeric.replace('proportional-nums', 'tabular-nums');
-                    // Update OpenType features but preserve figure style (oldstyle/lining)
-                    const hasOldStyle = cell.style.fontFeatureSettings.includes('onum');
-                    cell.style.fontFeatureSettings = hasOldStyle ? '"onum", "tnum"' : '"lnum", "tnum"';
+                    if (cell.classList.contains('proportional-style')) {
+                        cell.classList.remove('proportional-style');
+                    }
+                    cell.classList.add('tabular-style');
                 });
             } else {
                 // Use proportional numerals
                 cells.forEach(cell => {
-                    // Replace tabular with proportional but preserve other settings
-                    // cell.style.fontVariantNumeric = cell.style.fontVariantNumeric.replace('tabular-nums', 'proportional-nums');
-                    // Update OpenType features but preserve figure style (oldstyle/lining)
-                    const hasOldStyle = cell.style.fontFeatureSettings.includes('onum');
-                    cell.style.fontFeatureSettings = hasOldStyle ? '"onum", "pnum"' : '"lnum", "pnum"';
+                    if (cell.classList.contains('tabular-style')) {
+                        cell.classList.remove('tabular-style');
+                    }
+                    cell.classList.add('proportional-style');
                 });
             }
         }
@@ -213,64 +235,64 @@
     <table>
         <thead>
             <tr>
-                <th>Category</th>
-                <th>Small</th>
-                <th>Medium</th>
-                <th>Large</th>
-                <th>X-Large</th>
-                <th>XX-Large</th>
+                <th class="old-style proportional-style">Category</th>
+                <th class="old-style proportional-style">Small</th>
+                <th class="old-style proportional-style">Medium</th>
+                <th class="old-style proportional-style">Large</th>
+                <th class="old-style proportional-style">X-Large</th>
+                <th class="old-style proportional-style">XX-Large</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Product A</td>
-                <td><span>87.45</span></td>
-                <td><span>1,245</span></td>
-                <td><span>28,756.2</span></td>
-                <td><span>385,942</span></td>
-                <td><span>4,587,652.89</span></td>
+                <td class="old-style proportional-style">Product A</td>
+                <td class="old-style proportional-style"><span>87.45</span></td>
+                <td class="old-style proportional-style"><span>1,245</span></td>
+                <td class="old-style proportional-style"><span>28,756.2</span></td>
+                <td class="old-style proportional-style"><span>385,942</span></td>
+                <td class="old-style proportional-style"><span>4,587,652.89</span></td>
             </tr>
             <tr>
-                <td>Product B</td>
-                <td><span>52</span></td>
-                <td><span>2,382.54</span></td>
-                <td><span>35,928</span></td>
-                <td><span>472,851.39</span></td>
-                <td><span>8,275,391</span></td>
+                <td class="old-style proportional-style">Product B</td>
+                <td class="old-style proportional-style"><span>52</span></td>
+                <td class="old-style proportional-style"><span>2,382.54</span></td>
+                <td class="old-style proportional-style"><span>35,928</span></td>
+                <td class="old-style proportional-style"><span>472,851.39</span></td>
+                <td class="old-style proportional-style"><span>8,275,391</span></td>
             </tr>
             <tr>
-                <td>Product C</td>
-                <td><span>96.32</span></td>
-                <td><span>3,654</span></td>
-                <td><span>46,213.7</span></td>
-                <td><span>988,773.45</span></td>
-                <td><span>12,456,398.45</span></td>
+                <td class="old-style proportional-style">Product C</td>
+                <td class="old-style proportional-style"><span>96.32</span></td>
+                <td class="old-style proportional-style"><span>3,654</span></td>
+                <td class="old-style proportional-style"><span>46,213.7</span></td>
+                <td class="old-style proportional-style"><span>988,773.45</span></td>
+                <td class="old-style proportional-style"><span>12,456,398.45</span></td>
             </tr>
             <tr>
-                <td>Product D</td>
-                <td><span>73</span></td>
-                <td><span>4,987.29</span></td>
-                <td><span>59,426</span></td>
-                <td><span>7,111,491</span></td>
-                <td><span>29,845,623</span></td>
+                <td class="old-style proportional-style">Product D</td>
+                <td class="old-style proportional-style"><span>73</span></td>
+                <td class="old-style proportional-style"><span>4,987.29</span></td>
+                <td class="old-style proportional-style"><span>59,426</span></td>
+                <td class="old-style proportional-style"><span>7,111,491</span></td>
+                <td class="old-style proportional-style"><span>29,845,623</span></td>
             </tr>
             <tr>
-                <td>Product E</td>
-                <td><span>50.25</span></td>
-                <td><span>7,256</span></td>
-                <td><span>96,325.6</span></td>
-                <td><span>874,562</span></td>
-                <td><span>587,456,397.12</span></td>
+                <td class="old-style proportional-style">Product E</td>
+                <td class="old-style proportional-style"><span>50.25</span></td>
+                <td class="old-style proportional-style"><span>7,256</span></td>
+                <td class="old-style proportional-style"><span>96,325.6</span></td>
+                <td class="old-style proportional-style"><span>874,562</span></td>
+                <td class="old-style proportional-style"><span>587,456,397.12</span></td>
             </tr>
         </tbody>
         <tfoot>
             <tr>
-                <td>Total</td>
-                <td><span>358.02</span></td>
-                <td><span>19,524.83</span></td>
-                <td><span>266,648.5</span></td>
-                <td><span>2,968,948.1</span></td>
-                <td><span>642,621,461.46</span></td>
+                <td class="old-style proportional-style">Total</td>
+                <td class="old-style proportional-style"><span>358.02</span></td>
+                <td class="old-style proportional-style"><span>19,524.83</span></td>
+                <td class="old-style proportional-style"><span>266,648.5</span></td>
+                <td class="old-style proportional-style"><span>2,968,948.1</span></td>
+                <td class="old-style proportional-style"><span>642,621,461.46</span></td>
             </tr>
         </tfoot>
     </table>
